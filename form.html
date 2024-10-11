@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма работы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+        }
+        input, select, textarea, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            font-size: 1em;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .half-width {
+            width: 48%;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Client Details</h2>
+        <div class="flex-container">
+            <input type="text" id="firstName" placeholder="Имя" required class="half-width" aria-label="Имя"/>
+            <input type="text" id="lastName" placeholder="Фамилия" required class="half-width" aria-label="Фамилия"/>
+        </div>
+        <input type="tel" id="phone" placeholder="Телефон" required aria-label="Телефон"/>
+        <input type="email" id="email" placeholder="Email" required aria-label="Email"/>
+    </div>
+
+    <div>
+        <h2>Job Type</h2>
+        <label for="jobType">Тип работы</label>
+        <select id="jobType" required aria-label="Тип работы">
+            <option value="">Выберите тип работы</option>
+            <option value="Cleaning">Уборка</option>
+            <option value="Repair">Ремонт</option>
+            <option value="Installation">Установка</option>
+        </select>
+        <input type="text" id="additionalField" placeholder="Дополнительное поле (необязательно)" aria-label="Дополнительное поле"/>
+        <textarea id="description" placeholder="Описание работы" required aria-label="Описание работы"></textarea>
+    </div>
+
+    <div>
+        <h2>Service Location</h2>
+        <input type="text" id="location" placeholder="Адрес (без интеграции с Google Maps)" aria-label="Адрес"/>
+
+        <h2>Scheduled</h2>
+        <input type="date" id="date" required aria-label="Дата"/>
+        <div class="flex-container">
+            <input type="time" id="startTime" required class="half-width" aria-label="Время начала"/>
+            <input type="time" id="endTime" required class="half-width" aria-label="Время окончания"/>
+        </div>
+        <label for="technician">Выберите техника</label>
+        <select id="technician" required aria-label="Техник">
+            <option value="">Выберите техника</option>
+            <option value="Technician 1">Техник 1</option>
+            <option value="Technician 2">Техник 2</option>
+        </select>
+    </div>
+
+    <div class="btn-container">
+        <button id="createJobBtn">Create a Job</button>
+        <button id="saveInfoBtn">Save Info</button>
+    </div>
+
+    <script>
+        document.getElementById('createJobBtn').addEventListener('click', function () {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const jobType = document.getElementById('jobType').value;
+            const additionalField = document.getElementById('additionalField').value;
+            const description = document.getElementById('description').value;
+            const location = document.getElementById('location').value;
+            const date = document.getElementById('date').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            const technician = document.getElementById('technician').value;
+
+            // Отладка: вывод значений в консоль
+            console.log({
+                firstName, 
+                lastName, 
+                phone, 
+                email, 
+                jobType, 
+                additionalField, 
+                description, 
+                location, 
+                date, 
+                startTime, 
+                endTime, 
+                technician
+            });
+
+            // Передача данных в родительское окно
+            window.parent.postMessage({ 
+                firstName, 
+                lastName, 
+                phone, 
+                email, 
+                jobType, 
+                additionalField, 
+                description, 
+                location, 
+                date, 
+                startTime, 
+                endTime, 
+                technician 
+            }, '*');
+        });
+
+        document.getElementById('saveInfoBtn').addEventListener('click', function () {
+            alert('Информация сохранена (функционал не реализован).');
+        });
+    </script>
+</body>
+</html>

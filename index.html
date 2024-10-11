@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интеграция с Pipedrive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        iframe {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            width: 600px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="iframeForm" src="form.html"></iframe>
+
+    <script>
+        window.addEventListener('message', (event) => {
+    if (event.data && event.data.firstName) { // Проверка, что данные содержат необходимое поле
+        const formData = event.data;
+        console.log('Полученные данные формы:', formData); // Отладка
+        sendToPipedrive(formData);
+    }
+});
+
+
+function sendToPipedrive(data) {
+            const title = `${data.jobType || 'Не указан'} - ${data.firstName || 'Не указано'} ${data.lastName || ''}`;
+            const requestBody = {
+                title: title,
+                custom_fields: {
+            "cb7f4139bca0923ef2d9f6ae1f3e2062edb1844b": data.address || '', // Address
+            "108e1e6a64eda89da2791dd6559bb887106aa9e9": data.jobType || '', // Job type
+            "e3ee89f2fc5bb0787e261c8e8cd7518e5dd74abb": data.jobSource || '', // Job source
+            "07c7f7ad1c43cec0d83b7c58b71ba96c5f14d650": data.jobDate || '', // Job date
+            "a443187a72d508910860c5b0b6d059a097c5c2ec": data.startTime || '', // Job start time
+            "f900958e4ce6e91241226a22cc15587b44717d50": data.endTime || '', // Job end time
+            "5c10e1a27d947b938447a1dbde97955c71458ecd": data.technician || '', // Technician
+            "f38c21df8381a49a533c339a3db9feeec740b652": data.description || '' // Job comment
+        }
+            };
+
+            console.log('Отправляемые данные:', requestBody); // Отладка
+
+            fetch('https://cors-anywhere.herokuapp.com/https://api.pipedrive.com/v1/deals?api_token=088acf33b46e8e9c5f6d30798a2aaeccc808f72f', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ошибка! Статус: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('Сделка создана:', result);
+                window.postMessage({ status: 'success' }, '*');
+            })
+            .catch(error => {
+                console.error('Ошибка при создании сделки:', error);
+                window.postMessage({ status: 'error', error: error.message }, '*');
+                
+                // Обработка кода 429
+                if (error.message.includes('429')) {
+                    alert('Слишком много запросов! Попробуйте снова позже.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
