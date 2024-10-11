@@ -53,16 +53,16 @@
             <option value="Repair">Ремонт</option>
             <option value="Installation">Установка</option>
         </select>
-        <input type="text" id="additionalField" placeholder="Дополнительное поле (необязательно)" aria-label="Дополнительное поле"/>
+        <input type="text" id="jobSource" placeholder="Дополнительное поле (необязательно)" aria-label="Дополнительное поле"/>
         <textarea id="description" placeholder="Описание работы" required aria-label="Описание работы"></textarea>
     </div>
 
     <div>
         <h2>Service Location</h2>
-        <input type="text" id="location" placeholder="Адрес (без интеграции с Google Maps)" aria-label="Адрес"/>
+        <input type="text" id="adress" placeholder="Адрес (без интеграции с Google Maps)" aria-label="Адрес"/>
 
         <h2>Scheduled</h2>
-        <input type="date" id="date" required aria-label="Дата"/>
+        <input type="date" id="jobDate" required aria-label="Дата"/>
         <div class="flex-container">
             <input type="time" id="startTime" required class="half-width" aria-label="Время начала"/>
             <input type="time" id="endTime" required class="half-width" aria-label="Время окончания"/>
@@ -87,10 +87,10 @@
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
             const jobType = document.getElementById('jobType').value;
-            const additionalField = document.getElementById('additionalField').value;
+            const jobSource = document.getElementById('jobSource').value;
             const description = document.getElementById('description').value;
-            const location = document.getElementById('location').value;
-            const date = document.getElementById('date').value;
+            const adress = document.getElementById('adress').value;
+            const jobDate = document.getElementById('jobDate').value;
             const startTime = document.getElementById('startTime').value;
             const endTime = document.getElementById('endTime').value;
             const technician = document.getElementById('technician').value;
@@ -102,10 +102,10 @@
                 phone, 
                 email, 
                 jobType, 
-                additionalField, 
+                jobSource, 
                 description, 
-                location, 
-                date, 
+                adress, 
+                jobDate, 
                 startTime, 
                 endTime, 
                 technician
@@ -118,13 +118,13 @@
                 phone, 
                 email, 
                 jobType, 
-                additionalField, 
+                jobSource, 
                 description, 
-                location, 
-                date, 
+                adress, 
+                jobDate, 
                 startTime, 
                 endTime, 
-                technician 
+                technician
             }, '*');
         });
 
